@@ -4,6 +4,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { fetchImage } from './js/fetchImage';
+import { renderGallery } from './js/renderGallery';
 
 const searchFormRef = document.querySelector('form');
 const galleryRef = document.querySelector('.gallery');
@@ -22,7 +23,7 @@ function createQuery(e) {
     if (input) {
         fetchImage(input, page)
             .then(data => {
-                renderGallery(data.hits);
+                renderGallery(data.hits, galleryRef);
             });
     }
 }
