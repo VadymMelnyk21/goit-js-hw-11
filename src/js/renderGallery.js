@@ -1,11 +1,9 @@
-import renderCard from '../templates'
-console.log(renderCard);
-export function renderGallery(images) {
+import renderCard from '../templates/renderCard.hbs'
+// console.log(renderCard);
+export function renderGallery(images, galleryRef) {
   const markupGallery = images
-    .map(image => {
-      const markup = 0;
-      return markup;
-    })
+    .map(renderCard
+    )
     .join('');
   galleryRef.insertAdjacentHTML('beforeend', markupGallery);
 }
