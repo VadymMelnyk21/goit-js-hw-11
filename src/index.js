@@ -1,8 +1,9 @@
-import axios from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import './css/common.css';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+
+import { fetchImage } from './js/fetchImage';
 
 const searchFormRef = document.querySelector('form');
 const galleryRef = document.querySelector('.gallery');
@@ -16,9 +17,12 @@ function createQuery(e) {
     e.preventDefault();
     input = e.currentTarget.searchQuery.value.trim();
     galleryRef.innerHTML = '';
+    page = 1;
 
-    // if (input) {
-    //     fetchImage(input, page);
-    // }
-    console.log(input);
+    if (input) {
+        fetchImage(input, page)
+            .then(data => {
+                renderGallery(data.hits);
+            });
+    }
 }
