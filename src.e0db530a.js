@@ -72,7 +72,7 @@ module.exports={version:"0.26.1"};
 },{"./utils":"S1cf","./helpers/bind":"EDTP","./core/Axios":"OvAf","./core/mergeConfig":"OHvn","./defaults":"VQpg","./cancel/Cancel":"mIKj","./cancel/CancelToken":"tsWd","./cancel/isCancel":"V30M","./env/data":"xNqU","./helpers/spread":"X8jb","./helpers/isAxiosError":"wICU"}],"dZBD":[function(require,module,exports) {
 module.exports=require("./lib/axios");
 },{"./lib/axios":"nUiQ"}],"Stlt":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.fetchImage=o;var e=t(require("axios"));function t(e){return e&&e.__esModule?e:{default:e}}const a="26782517-d7749598e3fd4393206db4041";async function o(t,o){const{data:r}=await e.default.get(`/?key=${a}&q=${t}&image_type=photo&orientation=horizontal&safesearch=true&page=${o}&per_page=40`);return r}e.default.defaults.baseURL="https://pixabay.com/api";
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.fetchImage=r;var e=t(require("axios"));function t(e){return e&&e.__esModule?e:{default:e}}const a="26782517-d7749598e3fd4393206db4041";async function r(t,r){const{data:o}=await e.default.get("/",{params:{key:`${a}`,q:`${t}`,image_type:"photo",orientation:"horizontal",safesearch:"true",page:`${r}`,per_page:"40"}});return o}e.default.defaults.baseURL="https://pixabay.com/api";
 },{"axios":"dZBD"}],"pAws":[function(require,module,exports) {
 var define;
 var global = arguments[3];
@@ -84,4 +84,4 @@ var e,t=arguments[3];!function(t,r){"object"==typeof exports&&"object"==typeof m
 },{"../templates/renderCard.hbs":"O494"}],"Focm":[function(require,module,exports) {
 "use strict";var e=require("notiflix/build/notiflix-notify-aio");require("./css/common.css");var r=l(require("simplelightbox"));require("simplelightbox/dist/simple-lightbox.min.css");var t=require("./js/fetchImage"),i=require("./js/renderGallery");function l(e){return e&&e.__esModule?e:{default:e}}const n=document.querySelector("form"),u=document.querySelector(".gallery");let s,o=1;function c(e){e.preventDefault(),s=e.currentTarget.searchQuery.value.trim(),u.innerHTML="",o=1,s&&(0,t.fetchImage)(s,o).then(e=>{(0,i.renderGallery)(e.hits,u)})}n.addEventListener("submit",c);
 },{"notiflix/build/notiflix-notify-aio":"MeeU","./css/common.css":"en75","simplelightbox":"yx6k","simplelightbox/dist/simple-lightbox.min.css":"en75","./js/fetchImage":"Stlt","./js/renderGallery":"L4ME"}]},{},["Focm"], null)
-//# sourceMappingURL=/goit-js-hw-11/src.d9694bd1.js.map
+//# sourceMappingURL=/goit-js-hw-11/src.e0db530a.js.map
