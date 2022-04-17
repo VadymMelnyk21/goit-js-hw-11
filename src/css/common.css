@@ -39,7 +39,7 @@ p {
     padding-top: 5px;
     padding-bottom: 5px;
     position: fixed;
-    background-color: #dfdfdf;
+    background-color: #5db09d;
     box-shadow: 0px 1px 3px 0px #686868;
 }
 
@@ -67,7 +67,7 @@ p {
 
 .search-form button:hover,
 .search-form button:focus {
-    background-color: #5db09d;
+    background-color: #5a5a5a;
 }
 
 .gallery-container {
