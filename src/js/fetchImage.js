@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { renderGallery } from './renderGallery';
 
 const key = '26782517-d7749598e3fd4393206db4041';
 axios.defaults.baseURL = 'https://pixabay.com/api'
 
-export async function fetchImage(name, page) {
+export async function fetchImage(name, page, galleryRef, observer) {
     const { data } = await axios.get(`/`,
         {
             params: {
@@ -16,5 +17,7 @@ export async function fetchImage(name, page) {
                 per_page: '40',
             }
         });
-    return data;
+    const cards = await renderGallery(data.hits, galleryRef, observer);
+               
+    return cards;
 }

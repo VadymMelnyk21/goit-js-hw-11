@@ -3,7 +3,8 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { fetchImage } from './js/fetchImage';
-import { renderGallery } from './js/renderGallery';
+// import { renderGallery } from './js/renderGallery';
+import { optionsIntersection } from './js/optionIntersectionObserver';
 
 const searchFormRef = document.querySelector('form');
 const galleryRef = document.querySelector('.gallery');
@@ -20,9 +21,23 @@ function createQuery(e) {
     page = 1;
 
     if (input) {
-        fetchImage(input, page)
-            .then(data => {
-                renderGallery(data.hits, galleryRef);
-            });
+        fetchImage(input, page, galleryRef, observer)
+            // .then(data => {
+            //     renderGallery(data.hits, galleryRef);
+            //     observer.observe(sentinel);
+            // });
     }
+}
+
+const observer = new IntersectionObserver(updateList, optionsIntersection);
+
+function updateList(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+        page += 1;
+        observer.unobserve(galleryRef.lastElementChild);
+      fetchImage(input, page, galleryRef, observer);
+    }
+  });
+//   console.log(entries);
 }
