@@ -1,13 +1,12 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { fetchImage } from './js/fetchImage';
-// import { renderGallery } from './js/renderGallery';
+import { renderGallery } from './js/renderGallery';
 import { optionsIntersection } from './js/optionIntersectionObserver';
 
 const searchFormRef = document.querySelector('form');
 const galleryRef = document.querySelector('.gallery');
+const observer = new IntersectionObserver(updateList, optionsIntersection);
 
 let input;
 let page = 1;
@@ -21,22 +20,22 @@ function createQuery(e) {
     page = 1;
 
     if (input) {
-        fetchImage(input, page, galleryRef, observer)
-            // .then(data => {
-            //     renderGallery(data.hits, galleryRef);
-            //     observer.observe(sentinel);
-            // });
+        fetchImage(input, page, galleryRef)
+            .then(data => {
+                renderGallery(data.hits, galleryRef, observer);
+            });
     }
 }
-
-const observer = new IntersectionObserver(updateList, optionsIntersection);
 
 function updateList(entries) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
         page += 1;
         observer.unobserve(galleryRef.lastElementChild);
-      fetchImage(input, page, galleryRef, observer);
+        fetchImage(input, page, galleryRef)
+            .then(data => {
+                renderGallery(data.hits, galleryRef, observer);
+            });;
     }
   });
 //   console.log(entries);
