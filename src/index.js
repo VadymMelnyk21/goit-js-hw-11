@@ -3,6 +3,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchImage } from './js/fetchImage';
 import { renderGallery } from './js/renderGallery';
 import { optionsIntersection } from './js/optionIntersectionObserver';
+import { scroll } from './js/scroll';
 
 const searchFormRef = document.querySelector('form');
 const galleryRef = document.querySelector('.gallery');
@@ -57,6 +58,7 @@ async function loadMore() {
     perPage += data.hits.length;
     
     renderGallery(data.hits, galleryRef, observer);
+    scroll();
     try {     
         if (data.totalHits <= perPage) {
             observer.unobserve(galleryRef.lastElementChild);
