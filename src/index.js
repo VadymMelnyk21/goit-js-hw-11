@@ -10,6 +10,7 @@ const observer = new IntersectionObserver(updateList, optionsIntersection);
 
 let input;
 let page = 1;
+let perPage = 0;
 
 searchFormRef.addEventListener('submit', createQuery);
 
@@ -20,7 +21,8 @@ async function createQuery(e) {
     page = 1;
     
     if (input) {
-        const data = await fetchImage(input, page, galleryRef)
+        const data = await fetchImage(input, page, galleryRef);
+        perPage = data.hits.length;
 
             try {
 
@@ -38,20 +40,29 @@ async function createQuery(e) {
     }
 }
 
-async function updateList(entries) {
-  await entries.forEach(entry => {
-    if (entry.isIntersecting) {
-        page += 1;
-        observer.unobserve(galleryRef.lastElementChild);
-        Notify.success(`Page ${page}`);
-        fetchImage(input, page, galleryRef)
-            .then(data => {
-                renderGallery(data.hits, galleryRef, observer);
-            })
-            .catch(error => {
-                console.log(error);
-                Notify.failure("We're sorry, but you've reached the end of search results.");
-            })
+function updateList(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {     
+        loadMore()
     }
   });
+}
+
+async function loadMore() {
+    page += 1;
+    observer.unobserve(galleryRef.lastElementChild);
+    Notify.success(`Page ${page}`);
+
+    const data = await fetchImage(input, page, galleryRef)
+    perPage += data.hits.length;
+    
+    renderGallery(data.hits, galleryRef, observer);
+    try {     
+        if (data.totalHits <= perPage) {
+            observer.unobserve(galleryRef.lastElementChild);
+            Notify.failure("We're sorry, but you've reached the end of search results.");
+        }
+    } catch (error) {
+        console.log(error);
+    } 
 }
