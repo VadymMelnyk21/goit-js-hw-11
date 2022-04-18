@@ -13,17 +13,27 @@ let page = 1;
 
 searchFormRef.addEventListener('submit', createQuery);
 
-function createQuery(e) {
+async function createQuery(e) {
     e.preventDefault();
     input = e.currentTarget.searchQuery.value.trim();
     galleryRef.innerHTML = '';
     page = 1;
-
+    observer.unobserve(galleryRef);
     if (input) {
-        fetchImage(input, page, galleryRef)
-            .then(data => {
+        const data = await fetchImage(input, page, galleryRef)
+            try {
+
+            if (data.totalHits === 0) {
+                Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+            }
+
+            if (data.totalHits > 0) {
+                Notify.info(`Hooray! We found ${data.totalHits} images`);
                 renderGallery(data.hits, galleryRef, observer);
-            });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
@@ -31,7 +41,7 @@ function updateList(entries) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
         page += 1;
-        observer.unobserve(galleryRef.lastElementChild);
+        
         fetchImage(input, page, galleryRef)
             .then(data => {
                 renderGallery(data.hits, galleryRef, observer);
