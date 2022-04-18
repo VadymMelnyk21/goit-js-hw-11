@@ -18,9 +18,10 @@ async function createQuery(e) {
     input = e.currentTarget.searchQuery.value.trim();
     galleryRef.innerHTML = '';
     page = 1;
-    observer.unobserve(galleryRef);
+    
     if (input) {
         const data = await fetchImage(input, page, galleryRef)
+
             try {
 
             if (data.totalHits === 0) {
@@ -37,16 +38,20 @@ async function createQuery(e) {
     }
 }
 
-function updateList(entries) {
-  entries.forEach(entry => {
+async function updateList(entries) {
+  await entries.forEach(entry => {
     if (entry.isIntersecting) {
         page += 1;
-        
+        observer.unobserve(galleryRef.lastElementChild);
+        Notify.success(`Page ${page}`);
         fetchImage(input, page, galleryRef)
             .then(data => {
                 renderGallery(data.hits, galleryRef, observer);
-            });;
+            })
+            .catch(error => {
+                console.log(error);
+                Notify.failure("We're sorry, but you've reached the end of search results.");
+            })
     }
   });
-//   console.log(entries);
 }
